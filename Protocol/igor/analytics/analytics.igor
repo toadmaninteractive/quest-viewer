@@ -1,0 +1,29 @@
+[* json.enabled string.enabled]
+module Analytics
+{
+    enum EventName
+    {
+        session_start;
+    }
+
+    [schema meta=(clickhouse.type="DateTime" timestamp_mode="s")]
+    define DateTime string;     // YYYY-MM-DD HH:MM:SS
+
+    [schema meta=(clickhouse.type="DateTime64" timestamp_mode="ms")]
+    define DateTime64 uint64;   // UNIX timestamp, ms
+
+    [schema root]
+    variant AnalyticsEvent
+    {
+        tag EventName event_name;
+        DateTime datetime;
+        string branch;
+        int revision;
+        string username = ""; 
+        string installation_id;
+    }
+
+    record AnalyticsEvent.SessionStart[session_start]
+    {
+    }
+}

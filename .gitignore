@@ -1,0 +1,15 @@
+/.vs
+
+/QuestViewer/bin
+/QuestViewer/obj
+/QuestViewer/QuestViewer.csproj.user
+
+/QuestViewerAPI/bin
+/QuestViewerAPI/obj
+/QuestViewerAPI/QuestGraph.Core.csproj.user
+
+/Tests/bin
+/Tests/obj
+
+/Publish/
+/Bin/

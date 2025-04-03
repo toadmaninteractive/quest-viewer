@@ -1,0 +1,215 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:local="clr-namespace:QuestViewer"
+                    xmlns:telerikDrawing="clr-namespace:QuestGraph.Core.TelerikDrawingModel;assembly=QuestGraph.Core"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:primitives="clr-namespace:Telerik.Windows.Controls.Diagrams.Primitives;assembly=Telerik.Windows.Controls.Diagrams"
+                    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="ConnectionStyle" TargetType="telerik:RadDiagramConnection">
+        <Setter Property="TargetCapType" Value="{Binding Path=TargetCapTypeConnection}" />
+        <Setter Property="SourceCapType" Value="{Binding Path=SourceCapTypeConnection}" />
+        <Setter Property="StrokeDashArray" Value="{Binding Path=StrokeDashArrayConnection}" />
+        <Setter Property="SourceConnectorPosition" Value="{Binding Path=SourceConnectorPosition}" />
+        <Setter Property="TargetConnectorPosition" Value="{Binding Path=TargetConnectorPosition}" />
+
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BlockBaseStyle" TargetType="telerikDrawing:BlockShapeBase">
+        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+        <Setter Property="Position" Value="{Binding Position, Mode=TwoWay}" />
+        <Setter Property="Width" Value="{Binding Width, Mode=TwoWay}" />
+        <Setter Property="Height" Value="{Binding Height, Mode=TwoWay}" />
+        <Setter Property="ZIndex" Value="4" />
+        <Setter Property="IsRotationEnabled" Value="False" />
+        <Setter Property="UseDefaultConnectors" Value="False" />
+        <Setter Property="CustomConnectors" Value="{Binding Connectors}" />
+    </Style>
+
+    <Style x:Key="BlockActionStyle" BasedOn="{StaticResource BlockBaseStyle}" TargetType="telerikDrawing:BlockShape">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Path
+                            x:Name="Background"
+                            Stretch="Fill"
+                            StrokeThickness="2"
+                            ToolTip="{Binding Path=ToolTip}">
+                            <Path.Data>
+                                <RectangleGeometry Rect="100,20 100,50" RadiusX="3" RadiusY="3" />
+                            </Path.Data>
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="#FFF6DC"/>                                    
+                                    <Setter Property="Stroke" Value="#9E9FA5"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=IsActive}" Value="True">
+                                            <Setter Property="Fill" Value="#E7D384"/>
+                                            <Setter Property="Stroke" Value="#CAA928"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=IsValid}" Value="False">
+                                            <Setter Property="Fill" Value="#DC8686"/>
+                                            <Setter Property="Stroke" Value="#B06161"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                                            <Setter Property="Stroke" Value="#776B5D"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                        <TextBlock Text="{Binding Path=Caption}" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="{DynamicResource FontFamilyNormal}" FontSize="12" FontWeight="Bold"/>
+                        <primitives:ConnectorsControl
+                            ItemsSource="{Binding Path=Connectors}"
+                            Visibility="Visible" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BlockStateStyle" BasedOn="{StaticResource BlockBaseStyle}" TargetType="telerikDrawing:BlockShape">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Path
+                            x:Name="Background"
+                            Stretch="Fill"
+                            StrokeThickness="2"
+                            ToolTip="{Binding Path=ToolTip}">
+                            <Path.Data>
+                                <RectangleGeometry Rect="100,20 100,50" RadiusX="3" RadiusY="3" />
+                            </Path.Data>
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="#FFE0EAF1"/>
+                                    <Setter Property="Stroke" Value="#FF5B7199"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=IsActive}" Value="True">
+                                            <Setter Property="Fill" Value="#88A8B7"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=IsValid}" Value="False">
+                                            <Setter Property="Fill" Value="#DC8686"/>
+                                            <Setter Property="Stroke" Value="#B06161"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                                            <Setter Property="Stroke" Value="#374259"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                        <TextBlock Text="{Binding Path=Caption}" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" 
+                                   FontFamily="{DynamicResource FontFamilyNormal}" 
+                                   FontSize="12" 
+                                   FontWeight="Bold"/>
+                        <primitives:ConnectorsControl
+                            ItemsSource="{Binding Path=Connectors}"
+                            Visibility="Visible" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BlockGroupShapeStyle" BasedOn="{StaticResource BlockBaseStyle}" TargetType="telerikDrawing:BlockGroupShape">
+        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid>
+                            <Rectangle x:Name="RectangleBG" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                <Rectangle.Style>
+                                    <Style TargetType="Rectangle">
+                                        <Setter Property="Fill" Value="AliceBlue"/>
+                                        <Setter Property="Stroke" Value="#FF1B3159"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                                                <Setter Property="Stroke" Value="#CAA928"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Rectangle.Style>
+                            </Rectangle>
+
+                            <Grid Background="{x:Null}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Rectangle x:Name="RectangleHeader"
+                                    Grid.Row="0"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"
+                                    Panel.ZIndex="1" >
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="Fill" Value="#FF5B7199"/>
+                                            <Setter Property="Stroke" Value="#FF1B3159"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                                                    <Setter Property="Stroke" Value="#CAA928"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+                                </Rectangle>
+
+                                <TextBlock Text="{Binding Path=Caption}"
+                                    Padding="5"
+                                    Foreground="White"
+                                    TextAlignment="Center"
+                                    FontFamily="{DynamicResource FontFamilyNormal}" 
+                                    FontSize="11" 
+                                    FontWeight="Bold"
+                                    Panel.ZIndex="1"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Grid.Row="0" />
+
+                                <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Border Margin="5" CornerRadius="3" Background="#FFE0EAF1" BorderBrush="#FF5B7199"
+                                            BorderThickness="1" Height="27" Width="60" VerticalAlignment="Center">
+                                            <TextBlock FontSize="12" Text="States" Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock FontSize="12" Text="{Binding Path=StateCount}" Margin="5,1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Border Margin="5" CornerRadius="3" Background="#E7D384" BorderBrush="#CAA928"
+                                                BorderThickness="2" Height="27" Width="60" VerticalAlignment="Center">
+                                            <TextBlock FontSize="12" Text="Actions" Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock FontSize="12" Text="{Binding Path=ActionCount}" Margin="5,1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                        <primitives:ConnectorsControl
+                            ItemsSource="{Binding Path=Connectors}"
+                            Visibility="Visible" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="GroupStyle" TargetType="Rectangle">
+        <Setter Property="StrokeThickness" Value="2" />
+        <Setter Property="Stroke" Value="#FFCF81" />
+        <Setter Property="RadiusX" Value="3" />
+        <Setter Property="RadiusY" Value="3" />
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="QuestViewer.ValidationComboBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QuestViewer"
+             mc:Ignorable="d" 
+             Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ValidationComboBox}}, Path=HeightTotalValue, UpdateSourceTrigger=PropertyChanged}"
+             MinHeight="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ValidationComboBox}}, Path=HeightTotalValue, UpdateSourceTrigger=PropertyChanged}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ValidationComboBox}}, Path=ItemsSourceValue, UpdateSourceTrigger=PropertyChanged}" 
+                  Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ValidationComboBox}}, Path=TextValue, UpdateSourceTrigger=PropertyChanged}"
+                  Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ValidationComboBox}}, Path=HeightValue, UpdateSourceTrigger=PropertyChanged}"
+                  DropDownOpened="DropDownOpenedHandler"
+                  GotFocus="GotFocusHandler"
+                  LostFocus="LostFocusHandler"
+                  MaxDropDownHeight="200"
+                  IsEditable="True" Style="{StaticResource ComboBox}" />
+
+
+        <!--<TextBox 
+            Grid.Row="0"
+            Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ValidationComboBox}}, Path=HeightValue, UpdateSourceTrigger=PropertyChanged}"
+            GotFocus="GotFocusHandler"
+            LostFocus="LostFocusHandler"
+            AcceptsReturn="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ValidationComboBox}}, Path=AcceptsReturnValue, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ValidationComboBox}}, Path=TextWrapping, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ValidationComboBox}}, Path=TextValue, UpdateSourceTrigger=PropertyChanged}"
+            Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ValidationComboBox}}, Path=NotificationType, UpdateSourceTrigger=PropertyChanged}"
+            VerticalContentAlignment="Center"
+            Style="{StaticResource RegularInputStyle}"/>-->
+        <TextBlock Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Name="ErrorControl" Margin="0,0,0,0" />
+    </Grid>
+</UserControl>

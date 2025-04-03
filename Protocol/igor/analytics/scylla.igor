@@ -1,0 +1,35 @@
+using Analytics;
+
+[* json.enabled]
+module Scylla
+{
+    record ScyllaEnvelope
+    {
+        list<AnalyticsEvent> events = [];
+    }
+
+    record ScyllaResponse
+    {
+        int ingested_count;
+    }
+
+    exception ScyllaError
+    {
+        ?string error;
+        ?string info;
+    }
+
+    [csharp http.client]
+    webservice ScyllaApi
+    {
+        // URL: https://scylla.yourcompany.com/ingest
+        SendEvents => POST /{string app_code}
+            ~Content-Type: "application/json"
+            ~X-Api-Key: {string api_key}
+            ScyllaEnvelope ->
+            201: ScyllaResponse,
+            400: ScyllaError,
+            403: ScyllaError,
+            500: ScyllaError;
+    }
+}

@@ -1,0 +1,59 @@
+{
+  "blocks": [
+    {
+      "ref_id": "7f151f90-e119-46a7-99a5-e157a8b98c14",
+      "layout": {
+        "x": 360,
+        "y": 161,
+        "width": 100,
+        "height": 60
+      },
+      "type": "action",
+      "caption": "1111"
+    },
+    {
+      "ref_id": "b0b44c1d-20c0-4a24-9f86-4ea9bc03de64",
+      "layout": {
+        "x": 360,
+        "y": 317,
+        "width": 100,
+        "height": 60
+      },
+      "type": "state",
+      "is_active": false,
+      "caption_active": "poel",
+      "caption_inactive": "ne poel"
+    },
+    {
+      "ref_id": "410df14f-6e11-4533-b667-03a3ef1a06da",
+      "layout": {
+        "x": 920,
+        "y": 440,
+        "width": 100,
+        "height": 60
+      },
+      "type": "action",
+      "caption": "sytyi"
+    },
+    {
+      "ref_id": "",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "type": null
+    }
+  ],
+  "edges": [
+    {
+      "ref_id": "3f2557af-a2e0-461d-8e17-cd4dfe40f1ef",
+      "from": "7f151f90-e119-46a7-99a5-e157a8b98c14",
+      "to": "b0b44c1d-20c0-4a24-9f86-4ea9bc03de64",
+      "type": "unidirectional"
+    }
+  ],
+  "presets": {},
+  "category": "diagram"
+}

@@ -1,0 +1,82 @@
+﻿<Window x:Class="QuestViewer.AppSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuestViewer"
+        mc:Ignorable="d"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        Loaded="LoadedHandler"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Title="{x:Static local:Texts+View+AppSettings.Title}" Height="300" Width="500"
+        Background="{StaticResource BodyLightBackground}">
+    <Window.Resources>
+        <ObjectDataProvider
+            x:Key="ApplicationUpdateChannelValues"
+            MethodName="GetValues"
+            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:ApplicationUpdateChannel" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid Margin="{StaticResource PageMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="{StaticResource WhitePrimaryColorBrush}" 
+                BorderBrush="{StaticResource BorderLightBackground}"
+                BorderThickness="1">
+            <Grid Margin="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <TextBlock 
+                        VerticalAlignment="Center"
+                        Text="{x:Static local:Texts+View+AppSettings.AppUpdateChannel}"
+                        Style="{StaticResource LableText}"
+                        Margin="0,0,0,10"/>
+                    <RadioButton 
+                        x:Name="ctrStableUpdateChannel"
+                        Content="Stable" Style="{StaticResource RadioButton}"
+                        Margin="0,0,0,10"/>
+                    <RadioButton 
+                        x:Name="ctrBetaUpdateChannel"
+                        Content="Beta" Style="{StaticResource RadioButton}"
+                        Margin="0,0,0,10"/>
+                    <RadioButton 
+                        x:Name="ctrDevUpdateChannel"
+                        Content="Dev" Style="{StaticResource RadioButton}"/>
+                    <!--<ComboBox x:Name="ctrAppUpdateChannel"
+                          VerticalAlignment="Center"
+                          Style="{StaticResource BaseComboBoxStyle}"
+                          ItemsSource="{Binding Source={StaticResource ApplicationUpdateChannelValues}}"/>-->
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <StackPanel
+            Grid.Row="1"
+            Margin="{StaticResource PageLargeMargin}"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <!--<Button 
+                Width="150"
+                Margin="0,0,5,0"  
+                IsCancel="True"
+                Content="{x:Static local:Texts.Cancel}"
+                Style="{StaticResource SecondaryFirstButton}"/>-->
+            <Button
+                Width="150"
+                Style="{StaticResource PrimaryButton}"
+                Content="{x:Static local:Texts.Save}"
+                Click="SaveHandler"/>
+        </StackPanel>
+    </Grid>
+</Window>

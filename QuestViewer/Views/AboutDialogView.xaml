@@ -1,0 +1,28 @@
+﻿<Window x:Class="QuestViewer.AboutDialogView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuestViewer"
+        mc:Ignorable="d"
+        Title="{x:Static local:Texts+View+QuestViewer.About}"
+        Background="{StaticResource BodyLightBackground}"
+        Height="210" Width="350" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <Grid>
+        <Image Name="img_About" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Stretch="None" Source="/Resources/icons/qv-logo-48.png" Width="63" />
+        <Button 
+                Style="{StaticResource PrimaryButton}"
+                HorizontalAlignment="Center"
+                Margin="0,0,10,10" Name="btn_OK"
+                VerticalAlignment="Bottom" Width="75" IsCancel="True"
+                Grid.ColumnSpan="2">OK</Button>
+        <StackPanel Margin="105,5,0,0" Orientation="Vertical">
+            <TextBlock VerticalAlignment="Top" FontSize="18" HorizontalAlignment="Left">Quest Viewer</TextBlock>
+            <TextBlock Margin="0,10,0,0" FontSize="12" VerticalAlignment="Top" Foreground="DarkSlateGray">Quest graph viewer tool</TextBlock>
+            <TextBlock Margin="0,2,0,0"  FontSize="12" Foreground="DarkSlateGray">
+                <Run Text="Version: "/><Run Text="{Binding AppVersion}"/>
+            </TextBlock>
+            <TextBlock Margin="0,15,0,0" FontSize="12" Foreground="DarkSlateGray">© 2023-2024 Toadman Interactive</TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>

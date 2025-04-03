@@ -1,0 +1,87 @@
+[* json.enabled]
+[schema enabled]
+[csharp namespace="Protocol"]
+module Cards
+{
+	// Type definitions
+	define EdgeRefId string;
+    define NodeRefId string;
+    define DiagramRefId string;
+
+	// Edges
+	enum EdgeType
+	{
+		unidirectional;
+		bidirectional;
+	}
+
+	record Edge
+    {
+        EdgeRefId ref_id;
+        NodeRefId from;
+        NodeRefId to;
+        EdgeType type;
+    }
+
+	// Blocks
+	enum NodeType
+    {
+        state;
+        action;
+    }
+	
+	record Layout
+    {
+        double x;
+        double y;
+        double width;
+        double height;
+    }
+	
+	variant Node
+    {
+        NodeRefId ref_id;
+        string name;
+        string description;
+        Layout layout;
+        tag NodeType type;
+    }
+
+    record Node.NodeState[state]
+    {
+        bool is_active;
+    }
+
+    record Node.NodeAction[action]
+    {
+    }
+
+    record GraphPreset
+    {
+        string name;
+        string description;
+        dict<NodeRefId, bool> node_state;
+    }
+
+    enum CardCategory
+    {
+        quest_graph = 0;
+    }
+    
+    [schema root]
+    variant Card
+    {
+        tag CardCategory category;
+        [* json.key="_id"]
+        [schema ignore]
+        atom id;
+    }
+    
+	[schema meta=(graph)]
+    record Card.CardQuestGraph[quest_graph]
+    {
+        list<Node> nodes;
+        list<Edge> edges;
+        list<GraphPreset> presets;
+    }
+}

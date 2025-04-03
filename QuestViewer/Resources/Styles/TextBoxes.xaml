@@ -1,0 +1,183 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:QuestViewer="clr-namespace:QuestViewer">
+    <QuestViewer:StringValueToBoolConverter x:Key="StringValueToBoolConverter" />
+
+    <Style x:Key="ValidationTextBoxStyle" TargetType="{x:Type QuestViewer:ValidationTextBox}">
+        <Setter Property="HeightValue" Value="{StaticResource InputHeight}" />
+    </Style>
+
+
+    <!--  Start: Base input style  -->
+    <Style x:Key="BaseInputStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Height" Value="{StaticResource InputHeight}" />
+        <Setter Property="FontFamily" Value="{StaticResource FontFamilyNormal}" />
+        <Setter Property="FontSize" Value="{StaticResource InputFontSize}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="4,2" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{StaticResource GrayExtraBrush}" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    </Style>
+    <!--  End: Base input style  -->
+    
+    <!-- Start: Regular input style -->
+    <Style x:Key="RegularInputStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseInputStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border
+                        x:Name="border"
+                        Background="{StaticResource WhitePrimaryColorBrush}"
+                        BorderBrush="{StaticResource GrayTextBoxBorder}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{StaticResource InputCornerRadius}">
+                        <ScrollViewer x:Name="PART_ContentHost" />
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GrayTextBoxHoverBorder}" />
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GrayTextBoxHoverBorder}" />
+                        </Trigger>
+
+                        <Trigger Property="IsReadOnly" Value="True">
+                            <Setter Property="Cursor" Value="Arrow" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GrayTextBoxBorder}" />
+                        </Trigger>
+
+                        <DataTrigger Binding="{Binding ElementName=ErrorControl, Path=Text, Converter={StaticResource StringValueToBoolConverter}}" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource RedExtraBrush}"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- End: Regular input style -->
+
+    <!--  Start: Start password input style  -->
+    <Style x:Key="PasswordInputStyle" TargetType="{x:Type PasswordBox}">
+        <Setter Property="FontSize" Value="{StaticResource InputFontSize}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="3,-3,3,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{StaticResource BlackPrimaryColorBrush}" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type PasswordBox}">
+                    <Border
+                        x:Name="border"
+                        Background="{StaticResource WhitePrimaryColorBrush}"
+                        BorderBrush="{StaticResource GrayTextBoxBorder}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{StaticResource InputCornerRadius}">
+                        <ScrollViewer x:Name="PART_ContentHost" />
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource RedMiddleBrush}" />
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource RedMiddleBrush}" />
+                        </Trigger>
+
+                        <DataTrigger Binding="{Binding ElementName=PasswordBoxError, Path=Text, Converter={StaticResource StringValueToBoolConverter}}" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource RedExtraBrush}" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--  End: Base password input style  -->
+
+    <!--  Start: Username input style with validation  -->
+    <Style
+        x:Key="UsernameInputWithValidation"
+        BasedOn="{StaticResource BaseInputStyle}"
+        TargetType="{x:Type TextBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border
+                        x:Name="border"
+                        Background="{StaticResource WhitePrimaryColorBrush}"
+                        BorderBrush="{StaticResource GrayTextBoxBorder}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{StaticResource InputCornerRadius}">
+                        <ScrollViewer x:Name="PART_ContentHost" />
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GrayTextBoxHoverBorder}" />
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GrayTextBoxHoverBorder}" />
+                        </Trigger>
+
+                        <Trigger Property="IsReadOnly" Value="True">
+                            <Setter Property="Cursor" Value="Arrow" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GrayTextBoxBorder}" />
+                        </Trigger>
+
+                        <DataTrigger Binding="{Binding ElementName=UsernameError, Path=Text, Converter={StaticResource StringValueToBoolConverter}}" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource RedExtraBrush}" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--  End: Username input style with validation  -->
+
+    <!--  Start: Email input style with validation  -->
+    <Style
+        x:Key="EmailInputWithValidation"
+        BasedOn="{StaticResource BaseInputStyle}"
+        TargetType="{x:Type TextBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border
+                        x:Name="border"
+                        Background="{StaticResource WhitePrimaryColorBrush}"
+                        BorderBrush="{StaticResource GrayTextBoxBorder}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{StaticResource InputCornerRadius}">
+                        <ScrollViewer x:Name="PART_ContentHost" />
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GrayTextBoxHoverBorder}" />
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GrayTextBoxHoverBorder}" />
+                        </Trigger>
+
+                        <Trigger Property="IsReadOnly" Value="True">
+                            <Setter Property="Cursor" Value="Arrow" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GrayTextBoxBorder}" />
+                        </Trigger>
+
+                        <DataTrigger Binding="{Binding ElementName=EmailError, Path=Text, Converter={StaticResource StringValueToBoolConverter}}" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource RedPrimaryBrush}" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--  End: Email input style with validation  -->
+</ResourceDictionary>

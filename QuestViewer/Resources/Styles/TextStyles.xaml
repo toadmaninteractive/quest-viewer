@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">   
+    <Style x:Key="MutedText" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource GrayPrimaryBrush}"/>
+        <Setter Property="FontSize" Value="{StaticResource LabelFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamilyNormal}"/>
+    </Style>
+    <Style x:Key="LableText" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource LableTextBrush}"/>
+        <Setter Property="FontSize" Value="{StaticResource LabelFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamilyNormal}"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
+    </Style>
+    <Style x:Key="GeneralText" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource GeneralTextBrush}"/>
+        <Setter Property="FontSize" Value="{StaticResource LabelFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamilyNormal}"/>
+    </Style>
+    <Style x:Key="WarningText" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource WarningTextBrush}"/>
+        <Setter Property="FontSize" Value="{StaticResource LabelFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamilyNormal}"/>
+    </Style>
+</ResourceDictionary>

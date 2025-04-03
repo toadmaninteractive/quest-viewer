@@ -1,0 +1,65 @@
+{
+  "ref_id": "test_graph",
+  "blocks": [
+    {
+      "ref_id": "start_id",
+      "layout": {
+        "x": 50,
+        "y": 657.4,
+        "width": 120,
+        "height": 16.5
+      },
+      "type": "state",
+      "is_active": true,
+      "caption_active": "game has started",
+      "caption_inactive": "game has not started"
+    },
+    {
+      "ref_id": "move_to_door_id",
+      "layout": {
+        "x": 0,
+        "y": 611,
+        "width": 100,
+        "height": 16.5
+      },
+      "type": "action",
+      "caption": "Go to the door"
+    },
+    {
+      "ref_id": "condition_has_key_id",
+      "layout": {
+        "x": 330,
+        "y": 564,
+        "width": 120,
+        "height": 16.5
+      },
+      "type": "state",
+      "is_active": false,
+      "caption_active": "You has the key",
+      "caption_inactive": "You has not the key"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start_id",
+      "to": "move_to_door_id",
+      "type": "unidirectional"
+    },
+    {
+      "from": "move_to_door_id",
+      "to": "condition_has_key_id",
+      "type": "unidirectional"
+    }
+  ],
+  "presets": {
+    "AllSelectedId": {
+      "diagram_ref_id": "test_graph",
+      "name": "All selected",
+      "description": "Preset where all items has been selected",
+      "active_blocks": {
+        "start_id": true,
+        "condition_has_key_id": true
+      }
+    }
+  }
+}

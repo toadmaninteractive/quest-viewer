@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="BalloonLable" TargetType="Border">
+        <Setter Property="BorderBrush" Value="#DFA67B"/>
+        <Setter Property="Background" Value="#EFD595"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Margin" Value="8"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Height" Value="{StaticResource ButtonHeight}"/>
+        <Setter Property="MinWidth" Value="125"/>
+        <Setter Property="Opacity" Value="0.75"/>
+    </Style>
+</ResourceDictionary>

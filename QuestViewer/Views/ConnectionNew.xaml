@@ -1,0 +1,123 @@
+﻿<Window x:Class="QuestViewer.ConnectionNew"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuestViewer"
+        mc:Ignorable="d"
+        Title="{x:Static local:Texts+View+ConnectionManager.CreateConnection}" Height="515" Width="500"
+        Background="{StaticResource BodyLightBackground}"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="{StaticResource PageMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <Border Background="{StaticResource WhitePrimaryColorBrush}" BorderBrush="{StaticResource BorderLightBackground}" BorderThickness="1">
+            <Grid Margin="10">
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="0,15,10,0"/>
+                    </Style>
+                    <Style TargetType="local:ValidationTextBox">
+                        <Setter Property="HeightValue" Value="25"/>
+                        <Setter Property="Margin" Value="0,10,0,0"/>
+                    </Style>
+                    <Style TargetType="PasswordBox">
+                        <Setter Property="Height" Value="25"/>
+                        <Setter Property="Margin" Value="0,10,0,0"/>
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="{x:Static local:Texts+View+ConnectionManager.ConnectionTitle}"
+                        Style="{StaticResource LableText}" VerticalAlignment="Center" Margin="0,0,10,5"/>
+                    <local:ValidationTextBox
+                        Style="{StaticResource ValidationTextBoxStyle}"
+                        TextValue="{Binding Path=Title}"
+                        Errors="{Binding Path=Errors}"
+                        InputControlId="Title"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="{x:Static local:Texts+View+ConnectionManager.Url}"
+                    Style="{StaticResource LableText}" VerticalAlignment="Center" Margin="0,5,10,5"/>
+                <local:ValidationTextBox 
+                                 Style="{StaticResource ValidationTextBoxStyle}"
+                                 TextValue="{Binding Path=Url}"
+                                Errors="{Binding Path=Errors}"
+                                InputControlId="Url"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2">
+                    <TextBlock Text="{x:Static local:Texts+View+ConnectionManager.UserName}"
+                            Style="{StaticResource LableText}" VerticalAlignment="Center" Margin="0,7,10,5"/>
+                    <local:ValidationTextBox
+                        Style="{StaticResource ValidationTextBoxStyle}"
+                        TextValue="{Binding Path=Username}"
+                        Errors="{Binding Path=Errors}"
+                        InputControlId="Username"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="3">
+                    <TextBlock Text="{x:Static local:Texts+View+ConnectionManager.Password}"
+                        Style="{StaticResource LableText}" VerticalAlignment="Center" Margin="0,7,10,5"/>
+                    <StackPanel VerticalAlignment="Top">
+                        <PasswordBox x:Name="PasswordBox" PreviewKeyUp="PreviewKeyUpHandler" VerticalContentAlignment="Center" 
+                             VerticalAlignment="Top"
+                             Style="{StaticResource PasswordInputStyle}"
+                             Height="{StaticResource InputHeight}"/>
+                        <TextBlock Grid.Row="1" HorizontalAlignment="Left" Name="txtPasswordError" Margin="1,0,0,0" Foreground="Firebrick" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Row="4">
+                    <TextBlock Text="{x:Static local:Texts+View+ConnectionManager.DatabaseName}"
+                       Style="{StaticResource LableText}" VerticalAlignment="Center" Margin="0,0,10,5"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <local:ValidationComboBox 
+                            ItemsSourceValue="{Binding Path=ServerDataBases, Mode=TwoWay}"
+                            TextValue="{Binding Path=Database}"
+                            Errors="{Binding Path=Errors}"
+                            InputControlId="Database"
+                            HeightValue="{StaticResource InputHeight}"
+                            DropDownOpened="DropDownOpenedHandler"/>
+                        <Button 
+                            Grid.Column="1"
+                            Style="{StaticResource SecondaryFirstButton}"
+                            Margin="3,0,0,0"
+                            VerticalAlignment="Top"
+                            Width="{StaticResource InputHeight}" Height="{StaticResource InputHeight}" 
+                            Click="UpdateDataBasesHandler">
+                            <ContentControl Content="{StaticResource vector:update}" />
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+
+        <Button Grid.Row="1"
+            x:Name="btnSave"
+            Style="{StaticResource PrimaryButton}"
+            Click="SaveClickHandler"
+            Content="{x:Static local:Texts.Save}" Width="120"
+            Margin="{StaticResource PageLargeMargin}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"/>
+    </Grid>
+</Window>

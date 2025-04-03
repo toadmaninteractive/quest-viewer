@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:Double x:Key="InputFontSize">14</sys:Double>
+    <sys:Double x:Key="ButtonFontSize">15</sys:Double>
+    <sys:Double x:Key="LabelFontSize">16</sys:Double>
+    <Thickness x:Key="PageMargin">5</Thickness>
+    <Thickness x:Key="PageLargeMargin">0,10,0,5</Thickness>
+
+    <sys:Double x:Key="InputHeight">35</sys:Double>
+    <sys:Double x:Key="ButtonHeight">33</sys:Double>
+
+    <CornerRadius x:Key="ButtonCornerRadius">2</CornerRadius>
+    <CornerRadius x:Key="InputCornerRadius">5</CornerRadius>
+    <CornerRadius x:Key="InputCornerRadiusReduced">3</CornerRadius>
+    
+    <Duration x:Key="MouseOverDuration">0:0:0.125</Duration>
+</ResourceDictionary>

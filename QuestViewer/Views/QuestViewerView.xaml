@@ -1,0 +1,428 @@
+﻿<Window x:Class="QuestViewer.QuestViewerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuestViewer"
+        xmlns:core="clr-namespace:QuestGraph.Core;assembly=QuestGraph.Core"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        Background="{StaticResource BodyLightBackground}"
+        Title="{Binding Path=Title}"
+        Height="750" Width="900">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <local:BoolToVisibilityInversConverter x:Key="BoolToVisibilityInversConverter" />
+        <local:BoolInversConverter x:Key="BoolInversConverter" />
+        <local:ToBooleanConverter x:Key="ToBooleanConverter"/>
+        <local:StringValueToVisibilityConverter x:Key="StringValueToVisibilityConverter"/>
+        <local:EqualityMultiValueConverter x:Key="EqualityMultiValueConverter"/>
+        <local:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+        <local:ListValueToVisibilityConverter x:Key="ListValueToVisibilityConverter"/>
+        <local:PresetDropDownTypeToVisibilityConverter x:Key="PresetDropDownTypeToVisibilityConverter"/>
+
+        <sys:Double x:Key="ControlsWidth">190</sys:Double>
+        <telerik:Office2013Theme x:Key="MainTheme" />
+    </Window.Resources>
+    <Grid Margin="{StaticResource PageMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Menu Height="24" VerticalAlignment="Center">
+            <MenuItem Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.Main}}">
+                <MenuItem 
+                    Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.NewConnections}}"
+                    Command="{Binding Path=AddConnectDbCommand}">
+                    <MenuItem.Icon>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource vector:new-connections}" />
+                        </StackPanel>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem 
+                    Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.ConnectionManager}}"
+                    Command="{Binding Path=OpenCouchDBConnectionManagerCommand}">
+                    <MenuItem.Icon>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource vector:connections-manager}" />
+                        </StackPanel>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem 
+                    Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.Connections}}"
+                    ItemsSource="{Binding Path=DbConnections}"
+                    IsEnabled="{Binding Path=DbConnections.Count, Converter={StaticResource ToBooleanConverter}}"
+                    UsesItemContainerTemplate="False">
+                    <MenuItem.Icon>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource vector:connections}" />
+                        </StackPanel>
+                    </MenuItem.Icon>
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="{x:Type MenuItem}">
+                            <Setter Property="Header" Value="{Binding Path=Title}" />
+                            <Setter Property="Tag" Value="{Binding}" />
+                            <Setter Property="Command" Value="{Binding Path=DataContext.ConnectToDBCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=MenuItem}}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                            <Style.Triggers>
+                                <DataTrigger Value="True">
+                                    <DataTrigger.Binding>
+                                        <MultiBinding Converter="{StaticResource EqualityMultiValueConverter}">
+                                            <Binding Path="Title" />
+                                            <Binding Path="DataContext.CurrentConnectionName" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=MenuItem}" />
+                                        </MultiBinding>
+                                    </DataTrigger.Binding>
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                <MenuItem 
+                    Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.CloseConnection}}"
+                    Command="{Binding Path=CloseConnectDbCommand}">
+                    <MenuItem.Icon>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource vector:connection-close}" />
+                        </StackPanel>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.LocalPresetsManage}}" Command="{Binding Path=LocalStateManagerCommand}">
+                    <MenuItem.Icon>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource vector:preset-management}" />
+                        </StackPanel>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.SaveLocalPreset}}" Command="{Binding Path=SaveStateAsLocalPresetCommand}">
+                    <MenuItem.Icon>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource vector:preset-add}" />
+                        </StackPanel>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.Settings}}"
+                          Command="{Binding Path=AppSettingsCommand}">
+                    <MenuItem.Icon>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource vector:gear}" />
+                        </StackPanel>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem 
+                    Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.OpenLogsFolder}}"
+                    Command="{Binding Path=OpenLogsCommand}">
+                    <MenuItem.Icon>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource vector:log-folder}" />
+                        </StackPanel>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
+                <Separator />
+                <MenuItem Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.Exit}}"
+                          Click="ExitHandler">
+                    <MenuItem.Icon>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource vector:log-out}" />
+                        </StackPanel>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.Help}}">
+                <MenuItem Header="{Binding Source={x:Static local:Texts+View+QuestViewer+MainMenu.About}}"
+                          Command="{Binding Path=AboutCommand}">
+                    <MenuItem.Icon>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="{StaticResource vector:about}" />
+                        </StackPanel>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <Border Grid.Row="1"
+                Background="White"
+                BorderBrush="{StaticResource GrayButtonActiveBackground}"
+                BorderThickness="1"
+                Margin="0,0,0,3"
+                Height="35" Padding="1">
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Command="{Binding Path=AddConnectDbCommand}"
+                    Style="{StaticResource IconButton}"
+                    ToolTip="{Binding Source={x:Static core:Texts+View+QuestViewer+ToolTips.NewConnections}}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource vector:new-connections}" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Command="{Binding Path=ShowConnectDbManagerCommand}"
+                    Style="{StaticResource IconButton}"
+                    ToolTip="{Binding Source={x:Static core:Texts+View+QuestViewer+ToolTips.ConnectionManager}}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource vector:connections-manager}" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Style="{StaticResource IconButton}"
+                    IsEnabled="{Binding Path=DbConnections.Count, Converter={StaticResource ToBooleanConverter}}"
+                    ToolTip="{Binding Source={x:Static core:Texts+View+QuestViewer+ToolTips.Connections}}">
+                    <i:Interaction.Behaviors>
+                        <local:DropDownButtonBehavior>
+                            <local:DropDownButtonBehavior.DropDownMenu>
+                                <ContextMenu ItemsSource="{Binding DbConnections}">
+                                    <ContextMenu.ItemContainerStyle>
+                                        <Style TargetType="MenuItem">
+                                            <Setter Property="Header" Value="{Binding Title}" />
+                                            <Setter Property="Command" Value="{Binding Path=DataContext.ConnectToDBCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+                                            <Setter Property="CommandParameter" Value="{Binding}" />
+                                            <Setter Property="FontWeight" Value="Normal" />
+                                            <Style.Triggers>
+                                                <DataTrigger Value="True">
+                                                    <DataTrigger.Binding>
+                                                        <MultiBinding Converter="{StaticResource EqualityMultiValueConverter}">
+                                                            <Binding Path="Title" />
+                                                            <Binding Path="DataContext.CurrentConnectionName" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}" />
+                                                        </MultiBinding>
+                                                    </DataTrigger.Binding>
+                                                    <Setter Property="FontWeight" Value="Bold" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContextMenu.ItemContainerStyle>
+                                </ContextMenu>
+                            </local:DropDownButtonBehavior.DropDownMenu>
+                        </local:DropDownButtonBehavior>
+                    </i:Interaction.Behaviors>
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource vector:connections}" />
+                        <TextBlock Text="{Binding Path=CurrentConnectionName}" Margin="5,0,5,3" FontSize="12" VerticalAlignment="Center"/>
+                        <ContentControl Content="{StaticResource vector:chevron}" VerticalContentAlignment="Center"  Width="16" Height="16"/>
+                    </StackPanel>
+                </Button>
+                <Button
+                    Style="{StaticResource IconButton}"
+                    IsEnabled="{Binding Path=AvailableGraphIds.Count, Converter={StaticResource ToBooleanConverter}}"
+                    ToolTip="{x:Static core:Texts+View+QuestViewer+ToolTips.Graphs}">
+                    <i:Interaction.Behaviors>
+                        <local:DropDownButtonBehavior>
+                            <local:DropDownButtonBehavior.DropDownMenu>
+                                <ContextMenu ItemsSource="{Binding AvailableGraphIds}">
+                                    <ContextMenu.ItemContainerStyle>
+                                        <Style TargetType="MenuItem">
+                                            <Setter Property="Header" Value="{Binding}" />
+                                            <Setter Property="Command" Value="{Binding Path=DataContext.UpdateSelectedGraphIdCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+                                            <Setter Property="CommandParameter" Value="{Binding}" />
+                                            <Setter Property="FontWeight" Value="Normal" />
+                                            <Style.Triggers>
+                                                <DataTrigger Value="True">
+                                                    <DataTrigger.Binding>
+                                                        <MultiBinding Converter="{StaticResource EqualityMultiValueConverter}">
+                                                            <Binding Path="" />
+                                                            <Binding Path="DataContext.SelectedGraphId" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}" />
+                                                        </MultiBinding>
+                                                    </DataTrigger.Binding>
+                                                    <Setter Property="FontWeight" Value="Bold" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContextMenu.ItemContainerStyle>
+                                </ContextMenu>
+                            </local:DropDownButtonBehavior.DropDownMenu>
+                        </local:DropDownButtonBehavior>
+                    </i:Interaction.Behaviors>
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource vector:graphs}" />
+                        <TextBlock Text="{Binding Path=SelectedGraphId}" Margin="5,0,5,3" FontSize="12" VerticalAlignment="Center"/>
+                        <ContentControl Content="{StaticResource vector:chevron}" VerticalContentAlignment="Center"  Width="16" Height="16"/>
+                    </StackPanel>
+                </Button>
+                <Button
+                    Style="{StaticResource IconButton}"
+                    IsEnabled="{Binding Path=Presets.Count, Converter={StaticResource ToBooleanConverter}}"
+                    ToolTip="{x:Static core:Texts+View+QuestViewer+ToolTips.GraphStates}">
+                    <i:Interaction.Behaviors>
+                        <local:DropDownButtonBehavior>
+                            <local:DropDownButtonBehavior.DropDownMenu>
+                                <ContextMenu ItemsSource="{Binding Presets}">
+                                    <ContextMenu.Resources>
+                                        <Viewbox x:Key="icon" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" x:Shared="false">
+                                            <Canvas Width="32" Height="32" Canvas.Left="0" Canvas.Top="0">
+                                                <Canvas Visibility="{Binding Path=., Converter={StaticResource PresetDropDownTypeToVisibilityConverter}, ConverterParameter='cloud'}">
+                                                    <Path Data="M31.0321,17.757c0,-4.0329,-3.2325,-7.3022,-7.22,-7.3022c-1.0535,0,-2.0532,0.2301,-2.9556,0.6403c-1.2577,-3.0018,-4.106,-5.098,-7.4206,-5.098c-4.0986,0,-7.485,3.2041,-8.0307,7.3641c-2.5038,0.7688,-4.3187,3.0378,-4.3187,5.718c0,5.3507,5.1554,5.868,8.5769,5.8809c0.0696,0.0311,0.1435,0.0399,0.2218,0.0399h14.628c0.0829,0,0.2487,-0.0093,0.4549,-0.0459C28.7932,24.8152,31.0321,21.6991,31.0321,17.757z" Fill="#3E79B4"/>
+                                                </Canvas>
+                                                <Canvas Visibility="{Binding Path=., Converter={StaticResource PresetDropDownTypeToVisibilityConverter}, ConverterParameter='local'}">
+                                                    <Path Data="M28.3625,2H3.6375C2.7369,2,2,2.7369,2,3.6375v16.725C2,21.2631,2.7369,22,3.6375,22h24.725c0.9006,0,1.6375,-0.7369,1.6375,-1.6375V3.6375C30,2.7369,29.2631,2,28.3625,2zM28,20H4V4h24V20z" Fill="#3E79B4"/>
+                                                    <Rectangle Canvas.Left="13" Canvas.Top="21" Width="6" Height="3" Fill="#3E79B4"/>
+                                                    <Rectangle Canvas.Left="4" Canvas.Top="4" Width="24" Height="16" Fill="#FFFFFF"/>
+                                                    <Path Data="M26.925,24H4.975c-0.5362,0,-0.975,0.4388,-0.975,0.975v5.05c0,0.5362,0.4388,0.975,0.975,0.975h21.95c0.5362,0,0.975,-0.4388,0.975,-0.975v-5.05C27.9,24.4388,27.4612,24,26.925,24zM18.5,29H6.5c-0.275,0,-0.5,-0.225,-0.5,-0.5s0.225,-0.5,0.5,-0.5h12c0.275,0,0.5,0.225,0.5,0.5S18.775,29,18.5,29zM18.5,27H6.5c-0.275,0,-0.5,-0.225,-0.5,-0.5s0.225,-0.5,0.5,-0.5h12c0.275,0,0.5,0.225,0.5,0.5S18.775,27,18.5,27zM23.5,29c-0.8284,0,-1.5,-0.6716,-1.5,-1.5c0,-0.8284,0.6716,-1.5,1.5,-1.5s1.5,0.6716,1.5,1.5C25,28.3284,24.3284,29,23.5,29z" Fill="#3E79B4"/>
+                                                    <Path Data="M18.5,29H6.5c-0.275,0,-0.5,-0.225,-0.5,-0.5l0,0c0,-0.275,0.225,-0.5,0.5,-0.5h12c0.275,0,0.5,0.225,0.5,0.5l0,0C19,28.775,18.775,29,18.5,29z" Fill="#FFFFFF"/>
+                                                    <Path Data="M18.5,27H6.5c-0.275,0,-0.5,-0.225,-0.5,-0.5l0,0c0,-0.275,0.225,-0.5,0.5,-0.5h12c0.275,0,0.5,0.225,0.5,0.5l0,0C19,26.775,18.775,27,18.5,27z" Fill="#FFFFFF"/>
+                                                    <Ellipse Canvas.Left="22" Canvas.Top="26" Width="3" Height="3" Fill="#FFFFFF"/>
+                                                </Canvas>
+                                            </Canvas>
+                                        </Viewbox>
+                                    </ContextMenu.Resources>
+                                    <ContextMenu.ItemContainerStyle>
+                                        <Style TargetType="MenuItem">
+                                            <Setter Property="Header" Value="{Binding}"/>
+                                            <Setter Property="Command" Value="{Binding Path=DataContext.UpdateCurrentPresetCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+                                            <Setter Property="CommandParameter" Value="{Binding}" />
+                                            <Setter Property="FontWeight" Value="Normal" />
+                                            <Setter Property="Icon" Value="{StaticResource icon}"  />
+                                            <Style.Triggers>
+                                                <DataTrigger Value="True">
+                                                    <DataTrigger.Binding>
+                                                        <MultiBinding Converter="{StaticResource EqualityMultiValueConverter}">
+                                                            <Binding Path="" />
+                                                            <Binding Path="DataContext.CurrentPreset" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}" />
+                                                        </MultiBinding>
+                                                    </DataTrigger.Binding>
+                                                    <Setter Property="FontWeight" Value="Bold" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContextMenu.ItemContainerStyle>
+                                </ContextMenu>
+                            </local:DropDownButtonBehavior.DropDownMenu>
+                        </local:DropDownButtonBehavior>
+                    </i:Interaction.Behaviors>
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Content="{StaticResource vector:presets}" />
+                        <TextBlock Text="{Binding Path=CurrentPreset}" Margin="5,0,5,3" FontSize="12" VerticalAlignment="Center"/>
+                        <ContentControl Content="{StaticResource vector:chevron}" VerticalContentAlignment="Center"  Width="16" Height="16"/>
+                    </StackPanel>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button
+                    Style="{StaticResource IconButton}"
+                    Command="{Binding Path=BlockGroupCollapseCommand}" 
+                    ToolTip="{x:Static core:Texts+View+QuestViewer+ToolTips.BlockGroupCollapse}">
+                    <Button.Content>
+                        <ContentControl Content="{StaticResource vector:group}" />
+                    </Button.Content>
+                </Button>
+                <ComboBox Width="210" Margin="3,0,0,0"
+                          Style="{StaticResource ComboBox}"
+                          ToolTip="{Binding Path=SelectedBlockGroup.Name}"
+                          Visibility="{Binding Path=BlockGroupInfos, Converter={StaticResource ListValueToVisibilityConverter}}"
+                          ItemsSource="{Binding Path=BlockGroupInfos, Mode=OneWay}"
+                          DisplayMemberPath="Name" Tag="Select Block Group"
+                          SelectedItem="{Binding Path=SelectedBlockGroup}"/> <!--Tag value is using for Water mark-->
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
+                <Button
+                    Style="{StaticResource IconButton}"
+                    Click="FittingHandler"
+                    ToolTip="{x:Static core:Texts+View+QuestViewer+ToolTips.MapDiagram}">
+                    <Button.Content>
+                        <ContentControl Content="{StaticResource vector:fitting}" />
+                    </Button.Content>
+                </Button>
+
+                <telerik:RadToggleButton 
+                    Style="{StaticResource ToggleButtonWithoutBorder}"
+                    ToolTip="{x:Static core:Texts+View+QuestViewer+ToolTips.ConnectionRouting}"
+                    Command="{Binding Path=ConnectionRoutingCommand}" 
+                    IsChecked="{Binding Path=IsConnectionRouting}"
+                    Margin="3,0,3,0">
+                    <telerik:RadToggleButton.Content>
+                        <ContentControl Content="{StaticResource vector:connection-routing}" />
+                    </telerik:RadToggleButton.Content>
+                </telerik:RadToggleButton>
+
+                <telerik:RadToggleButton 
+                    Style="{StaticResource ToggleButtonWithoutBorder}"
+                    Command="{Binding Path=ShowGridCommand}" 
+                    ToolTip="{x:Static core:Texts+View+QuestViewer+ToolTips.Grid}">
+                    <telerik:RadToggleButton.Content>
+                        <ContentControl Content="{StaticResource vector:grid}" />
+                    </telerik:RadToggleButton.Content>
+                </telerik:RadToggleButton>
+            </StackPanel>
+        </Border>
+        <telerik:RadBusyIndicator Grid.Row="2" IsBusy="{Binding Path=IsBusy}" Foreground="{StaticResource BlueColorBrush}" IsIndeterminate="True">
+            <telerik:RadBusyIndicator.Style>
+                <Style TargetType="{x:Type telerik:RadBusyIndicator}">
+                    <Setter Property="telerik:StyleManager.Theme" Value="{StaticResource MainTheme}"/>
+                </Style>
+            </telerik:RadBusyIndicator.Style>
+            <Grid>
+                <local:TelerikDiagram x:Name="Diagram" VerticalAlignment="Stretch" Background="{StaticResource WhitePrimaryColorBrush}"/>
+                <!--<DockPanel Grid.Column="1">
+                        <i:Interaction.Behaviors>
+                            <local:MsaglPanelBehavior/>
+                        </i:Interaction.Behaviors>
+                    </DockPanel>-->
+
+                <Button
+                    VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,7,7,0"
+                    Content="Apply remote update"
+                    Command="{Binding Path=ApplyRemoteUpdateToGraphCommand}"
+                    Visibility="{Binding Path=HasGraphRemoteUpdate, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Style="{StaticResource SecondaryFirstButton}" Width="{StaticResource ControlsWidth}" Grid.Column="1"/>
+
+                <Border Visibility="{Binding Path=ActiveConnectionCount, Converter={StaticResource CountToVisibilityConverter}}" Style="{StaticResource BalloonLable}">
+                    <StackPanel Orientation="Horizontal" Margin="5,0">
+                        <ContentControl Content="{StaticResource vector:proximity-card}" Margin="0" />
+                        <TextBlock
+                            Margin="2,0,2,0"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" 
+                            FontFamily="{StaticResource FontFamilyNormal}">
+                            <Run Text="Client connections: "/><Run Text="{Binding Path=ActiveConnectionCount}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </telerik:RadBusyIndicator>
+
+        <Grid
+            Grid.Row="2"
+            VerticalAlignment="Bottom"
+            Height="35"
+            Visibility="{Binding Path=IsAppUpdateDownloading, Converter={StaticResource BoolToVisibilityConverter}}">
+            <ProgressBar
+                Background="{StaticResource AppUpdateProgressBackground}"
+                BorderThickness="0"
+                Foreground="{StaticResource AppUpdateProgressForeground}"
+                Maximum="{Binding Path=TotalBytesToReceive}"
+                Value="{Binding Path=BytesToReceive}" />
+            <TextBlock
+                Margin="10,0,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="WhiteSmoke"
+                Text="{Binding Path=AppUpdateDownloadingText, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+        <Grid
+            Grid.Row="2"
+            Height="35"
+            VerticalAlignment="Bottom"
+            Background="{StaticResource AppUpdateProgressForeground}"
+            IsEnabled="{Binding Path=IsLocked, Converter={StaticResource BoolInversConverter}}"
+            Visibility="{Binding Path=HasAppUpdate, Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center"
+                    FontSize="{StaticResource LabelFontSize}"
+                    Foreground="{StaticResource WhitePrimaryColorBrush}"
+                    Text="{Binding Source={x:Static local:Texts+ApplycationApdater.UpdateIsAvailableNotification}}" />
+                <Button
+                    Width="80" Height="30"
+                    Command="{Binding Path=UpdateApplyCommand}"
+                    Content="{x:Static local:Texts.Apply}"
+                    Style="{StaticResource PrimaryButton}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

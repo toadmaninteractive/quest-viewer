@@ -1,0 +1,125 @@
+{
+  "ref_id": "go_out_from_room",
+  "blocks": [
+    {
+      "ref_id": "start_id",
+      "layout": {
+        "x": 50,
+        "y": 657.4,
+        "width": 120,
+        "height": 16.5
+      },
+      "type": "state",
+      "is_active": true,
+      "caption_active": "game has started",
+      "caption_inactive": "game has not started"
+    },
+    {
+      "ref_id": "move_to_door_id",
+      "layout": {
+        "x": 0,
+        "y": 611,
+        "width": 100,
+        "height": 16.5
+      },
+      "type": "action",
+      "caption": "Go to the door"
+    },
+    {
+      "ref_id": "condition_has_key_id",
+      "layout": {
+        "x": 330,
+        "y": 564,
+        "width": 120,
+        "height": 16.5
+      },
+      "type": "state",
+      "is_active": false,
+      "caption_active": "You has the key",
+      "caption_inactive": "You has not the key"
+    },
+    {
+      "ref_id": "condition_stand_at_door_id",
+      "layout": {
+        "x": 0,
+        "y": 564.6,
+        "width": 135,
+        "height": 16.5
+      },
+      "type": "state",
+      "is_active": false,
+      "caption_active": "Stand at the door",
+      "caption_inactive": "Don't stand at the door"
+    },
+    {
+      "ref_id": "condition_secure_code_id",
+      "layout": {
+        "x": 170,
+        "y": 564.6,
+        "width": 165,
+        "height": 16.5
+      },
+      "type": "state",
+      "is_active": false,
+      "caption_active": "Secure code has entered",
+      "caption_inactive": "Secure code has not entered"
+    },
+    {
+      "ref_id": "go_out_from_room_id",
+      "layout": {
+        "x": 150,
+        "y": 518.2,
+        "width": 120,
+        "height": 16.5
+      },
+      "type": "action",
+      "caption": "Go out from room"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start_id",
+      "to": "move_to_door_id",
+      "type": "unidirectional"
+    },
+    {
+      "from": "move_to_door_id",
+      "to": "condition_stand_at_door_id",
+      "type": "unidirectional"
+    },
+    {
+      "from": "condition_stand_at_door_id",
+      "to": "go_out_from_room_id",
+      "type": "unidirectional"
+    },
+    {
+      "from": "condition_has_key_id",
+      "to": "go_out_from_room_id",
+      "type": "bidirectional"
+    },
+    {
+      "from": "condition_secure_code_id",
+      "to": "go_out_from_room_id",
+      "type": "unidirectional"
+    }
+  ],
+  "presets": {
+    "FavoritePresetID": {
+      "diagram_ref_id": "go_out_from_room",
+      "name": "My favorite preset",
+      "description": "Description for my favorite preset",
+      "active_blocks": {
+        "start_id": true,
+        "condition_has_key_id": true
+      }
+    },
+    "ExampleID": {
+      "diagram_ref_id": "go_out_from_room",
+      "name": "example",
+      "description": null,
+      "active_blocks": {
+        "condition_stand_at_door_id": true
+      }
+    }
+  }
+}

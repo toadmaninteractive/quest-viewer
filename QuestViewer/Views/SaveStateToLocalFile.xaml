@@ -1,0 +1,54 @@
+﻿<Window x:Class="QuestViewer.SaveStateToLocalFile"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuestViewer"
+        mc:Ignorable="d"
+        Title="{x:Static local:Texts+View+SaveStateDialog.Title}" Height="185" Width="470"
+        Background="{StaticResource BodyLightBackground}"
+        local:DialogCloser.DialogResult="{Binding DialogResult}"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner">
+
+    <Grid Margin="{StaticResource PageMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Style="{StaticResource ContentHolderBorder}"
+                Padding="5">
+            <StackPanel Orientation="Vertical">
+                <TextBlock 
+                    Text="{x:Static local:Texts+View+SaveStateDialog.StateItemName}"
+                    Style="{StaticResource LableText}"/>
+                <local:ValidationTextBox 
+                    TextValue="{Binding Path=StateName}"
+                    Errors="{Binding Path=Errors}"
+                    TextWrapping="WrapWithOverflow"
+                    InputControlId="StateName"
+                    Style="{StaticResource ValidationTextBoxStyle}"/>
+            </StackPanel>
+        </Border>
+
+        <StackPanel
+             Grid.Row="1"
+             Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Margin="{StaticResource PageLargeMargin}">
+            <Button
+                Command="{Binding Path=SaveCommand}"
+                Width="100" 
+                Style="{StaticResource PrimaryButton}"
+                IsDefault="True"
+                Content="{x:Static local:Texts+View+LocalStateManagerDialog.Save}"/>
+            <Button
+                Width="100" 
+                Style="{StaticResource SecondaryFirstButton}"
+                Margin="5,0,0,0"
+                IsCancel="True"
+                Content="{x:Static local:Texts.Cancel}"/>
+        </StackPanel>
+    </Grid>
+</Window>
