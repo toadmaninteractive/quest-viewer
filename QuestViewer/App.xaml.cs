@@ -41,7 +41,7 @@ namespace QuestViewer
             viewModel.UpdaterSubscribe(updater);
             updater.RunAppUpdatesObserverRoutine().Track();
 
-            ChronosAPI.Initialization(new Uri(Constants.ChronosWsUri), Constants.ChronosApiKey, "quest_viewer", "client");
+            // ChronosAPI.Initialization(new Uri(Constants.ChronosWsUri), Constants.ChronosApiKey, "quest_viewer", "client");
 
             var lastConnection = config.LastConnection;
             if (lastConnection != null)

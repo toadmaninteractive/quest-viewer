@@ -53,7 +53,7 @@ namespace QuestViewer
 
             var metadata = new Json.JsonObject();
             metadata["username"] = string.IsNullOrWhiteSpace(Config.UserNameFromCurrentConnection) ? "Unauthorized" : Config.UserNameFromCurrentConnection;
-            ChronosAPI.Instance.AppLogAsync(new List<LogEntry> { new(logLevel, DateTimeOffset.UtcNow, metadata, formattedMessage) });
+            // ChronosAPI.Instance.AppLogAsync(new List<LogEntry> { new(logLevel, DateTimeOffset.UtcNow, metadata, formattedMessage) });
         }
 
         public static string StringToMD5(string value)
