@@ -55,11 +55,15 @@ namespace QuestViewer
 
         public void CheckForUpdates()
         {
+            return;
+
+            /*
             if (File.Exists(".ignoreupdate"))
                 return;
 
             CheckForUpdatesAsync()
                 .ContinueWith((task) => { });
+            */
         }
 
         private async Task CheckForUpdatesAsync()
